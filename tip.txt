@@ -1,0 +1,13 @@
+mongoos 는 몽고DB를 편하게 쓸 수 있는 Object Modeling Tool 이다.
+
+
+git remote 삭제
+https://blog.naver.com/pooah8/222197502391
+
+토큰: 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
+
+nodemon 소스를 변경할때 그걸 감지해서 자동으로 서버를 재시작해주는 tool
+
+<환경변수 process.env.NODE_ENV>
+local 환경에서 - development
+depoly(배포)한 후 - production
