@@ -49,6 +49,8 @@ userSchema.pre('save', function(next){//next는 바로 이 과정을 pass 함
       next()//완료 후 돌아감
     })
   })
+  } else {//그냥 나갈 곳을 만들어준다.
+    next()
   }
 });
 
