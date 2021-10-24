@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 const mongoose = require('mongoose');
-mongoose.connect(config.mongoURI)
+mongoose.connect(config.mongoURI)//데이터베이스와 연결
 .then(() => console.log('MongoDB Connected...'))
 .catch(err => console.log("MongoDB error: ", err));
 
@@ -26,9 +26,9 @@ app.post('/register', (req,res) => {
   //회원가입할때 필요한 정보들을 client(현재는 postman) 에서 가져오면
   //그것들을 데이터 베이스에 넣어준다.
 
-  //모델 생성, json 형식으로 req가 들어있다.
+  //받은 정보로 모델 생성, json 형식으로 req가 들어있다.
   const user = new User(req.body)
-  //정보들이 user 모델에 저장된다
+  //정보들이 database 에 save 된다.
   user.save((err, doc) => {
     if(err) return res.json({success:false,err})
     return res.status(200).json({success: true})
