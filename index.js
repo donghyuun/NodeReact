@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 const mongoose = require('mongoose');
-mongoose.connect(config.mongoURI)//데이터베이스와 연결
+mongoose.connect(config.mongoURI)//서버와 데이터베이스(mongoDB)를 연결
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log("MongoDB error: ", err));
 
@@ -30,8 +30,9 @@ app.post('/register', (req, res) => {
   //그것들을 데이터 베이스에 넣어준다.
 
   //받은 정보로 모델 생성, json 형식으로 req가 들어있다.
-  const user = new User(req.body)
-  //정보들이 database 에 save 된다.
+  const user = new User(req.body)//User 모델을 이용해 새로운 모델 인스턴스을 생성한다
+  //컬렉션(DB)에 저장하려면 mongoose의 save() 메소드를 호출하면 됩니다.
+  //save메서드를 사용하면 해당  database 에 save 된다.
   user.save((err, doc) => {
     if (err) return res.json({ success: false, err })
     return res.status(200).json({ success: true })
@@ -67,3 +68,6 @@ app.post('/login', (req, res) => {
 
 //5000번 포트에서 연결을 청취하고, 연결됬을 시 콜백함수를 실행한다.
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+//mongoose guide 
+//https://edu.goorm.io/learn/lecture/557/%ED%95%9C-%EB%88%88%EC%97%90-%EB%81%9D%EB%82%B4%EB%8A%94-node-js/lesson/174385/mongoose-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0

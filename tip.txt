@@ -4,7 +4,7 @@ mongoos 는 몽고DB를 편하게 쓸 수 있는 Object Modeling Tool 이다.
 git remote 삭제
 https://blog.naver.com/pooah8/222197502391
 
-토큰: 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
+토큰: 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
 
 nodemon 소스를 변경할때 그걸 감지해서 자동으로 서버를 재시작해주는 tool
 
