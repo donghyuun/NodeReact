@@ -55,10 +55,10 @@ userSchema.pre('save', function(next){//next는 바로 이 과정을 pass 함
 });
 
 userSchema.methods.comparePassword = function(plainPassword, callback){
-  //plainPassword vs hashed password
+  //plainPassword vs hashed password (using bcrypt method)
   bcrypt.compare(plainPassword, this.password, function(err, isMatch){
-    if(err) return callbackF(err)
-    callback(null, isMatch)
+    if(err) return callback(err)//different
+    callback(null, isMatch)//same
   })
 }
 
