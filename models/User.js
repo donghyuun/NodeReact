@@ -54,6 +54,14 @@ userSchema.pre('save', function(next){//next는 바로 이 과정을 pass 함
   }
 });
 
+userSchema.methods.comparePassword = function(plainPassword, callback){
+  //plainPassword vs hashed password
+  bcrypt.compare(plainPassword, this.password, function(err, isMatch){
+    if(err) return callbackF(err)
+    callback(null, isMatch)
+  })
+}
+
 //스키마를 모델로 감싸준다.
 //모델은 스키마를 감싸주는 역할
 const User = mongoose.model('User', userSchema)
