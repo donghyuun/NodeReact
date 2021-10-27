@@ -9,6 +9,7 @@ const bodyParser = require("body-parser")
 //모델을 가져온다.
 const cookieParser = require("cookie-parser");
 const config = require('./config/key');
+const { auth } = require('./middleware/auth');
 const { User } = require("./models/User");
 //application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,7 +26,7 @@ mongoose.connect(config.mongoURI)//서버와 데이터베이스(mongoDB)를 연�
 //root 디렉토리에 오면 hello world를 출력한다
 app.get('/', (req, res) => res.send('헬로 월드'))
 
-app.post('/register', (req, res) => {
+app.post('/api/users/register', (req, res) => {
   //회원가입할때 필요한 정보들을 client(현재는 postman) 에서 가져오면
   //그것들을 데이터 베이스에 넣어준다.
 
@@ -37,9 +38,11 @@ app.post('/register', (req, res) => {
     if (err) return res.json({ success: false, err })
     return res.status(200).json({ success: true })
   })
+
+  //결과적으로 http post 메소드로 백엔드 서버로 유저 정보를 날려주고 백엔드 서버에서 save 메소드로 DB에 저장을 해준다
 })
 
-app.post('/login', (req, res) => {
+app.post('/api/users/login', (req, res) => {
   //요청된 이메일을 데이터베이스에서 찾는다. mongoDB 메서드 이용
   User.findOne({ email: req.body.email }, (err, user) => {
     //요청한 email이 db정보 안에 있을 때 해당 db정보를 담은 객체 user 가 생성된다.
@@ -63,6 +66,21 @@ app.post('/login', (req, res) => {
           .json({ loginSuccess: true, userId: user._id })
       })
     })
+  })
+})
+
+//role 0 -> 일반유저, role 0 아니면 관리자
+app.get('/api/users/auth', auth/*미들웨어*/, (req, res) => {
+  //여기 까지 미들웨어를 통과해 왔다는 얘기는 authentication 이 true 라는 말
+  res.status(200).json({
+    _id: req.user._id,
+    isAdmin: req.user.role === 0 ? false : true,
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image
   })
 })
 
