@@ -69,12 +69,13 @@ app.post('/api/users/login', (req, res) => {
   })
 })
 
-//role 0 -> 일반유저, role 0 아니면 관리자
+//현재의 role => role 0 -> 일반유저, role 0 아니면 관리자
 app.get('/api/users/auth', auth/*미들웨어*/, (req, res) => {
   //여기 까지 미들웨어를 통과해 왔다는 얘기는 authentication 이 true 라는 말
+  //true라는 정보를 제공
   res.status(200).json({
-    _id: req.user._id,
-    isAdmin: req.user.role === 0 ? false : true,
+    _id: req.user._id,//auth에서 user 를 req 에 넣었기 때문에 사용가능
+    isAdmin: req.user.role === 0 ? false : true,//변경가능
     isAuth: true,
     email: req.user.email,
     name: req.user.name,
