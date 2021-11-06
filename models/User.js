@@ -104,5 +104,6 @@ userSchema.statics.findByToken = function(token, callback) {
 model 함수에선 기본적으론 두개의 파라미터를 필요로한다. 첫번째는 파라미터는 해당 스키마의 이름이고, 두번째는 스키마 객체이다. 스키마의 이름을 정해주면, 이의 복수형태로 컬렉션이름을 만들어준다.(현 users)
 
 예를들어, Book 으로 설정한다면, 실제 데이터베이스에서 생성되는 컬렉션 이름은 books 이다. 그리고, BookInfo 로 설정한다면 bookinfos 로 만들어진다.*/
-module.exports = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema);
+module.exports = { User };
 //모델 다른 곳에서도 쓸 수 있게 export 해준다.

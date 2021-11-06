@@ -85,6 +85,16 @@ app.get('/api/users/auth', auth/*미들웨어*/, (req, res) => {
   })
 })
 
+app.get('/api/users/logout', auth, (req, res)=> {
+  //첫번째 인자에 찾을 조건, 두번재 인자에 변경할 것
+  User.findOneAndUpdate({_id: req.user._id/*auth에서 req에 넣어줌*/}, 
+  {token: ""},
+  (err, user)=> {
+    if(err) return res.json({success: false, err});
+    return res.status(200).send({success:true})
+  })
+})
+
 //5000번 포트에서 연결을 청취하고, 연결됬을 시 콜백함수를 실행한다.
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
