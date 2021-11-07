@@ -1,10 +1,12 @@
 //다운받았던 express 모듈을 가져온다.
+//참고: https://expressjs.com/ko/guide/routing.html
 const express = require("express");
 //새로운 express app 을 만든다.
 const app = express()
 //5000번 포트를 백서버로 둔다.
 const port = 5000
 //client 에서 보내는 정보를 분석해서 서버에서 받을 수 있게 해준다.
+//bodyParser를 사용하지 않으면 req.body가 undefinded를 default로 받는다.
 const bodyParser = require("body-parser")
 //모델을 가져온다.
 const cookieParser = require("cookie-parser");
@@ -15,10 +17,12 @@ const { User } = require("./models/User");
 app.use(bodyParser.urlencoded({ extended: true }));
 //application/json
 app.use(bodyParser.json());
-
+/*bodyparser는 client 에서 오는 정보를 "분석해서" 가져올 수 있게 한다.
+x-www-form-urlencoded 이렇게 된 데이터와
+json 형식의 데이터를 분석할 수 있게 하기 위해 윗 문장을 적어준다.*/
 app.use(cookieParser());
 
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');//스키마를 만들고, 해당 스키마에 맞는 모델을 만들어 공통된 조건에 맞게 조회 및 저장이 가능하다.
 mongoose.connect(config.mongoURI)//서버와 데이터베이스(mongoDB)를 연결
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log("MongoDB error: ", err));
@@ -33,7 +37,8 @@ app.post('/api/users/register', (req, res) => {
   //받은 정보로 모델 생성, json 형식으로 req가 들어있다.
   const user = new User(req.body)//User 모델을 이용해 새로운 모델 인스턴스을 생성한다
   //컬렉션(DB)에 저장하려면 mongoose의 save() 메소드를 호출하면 됩니다.
-  //save메서드를 사용하면 해당  database 에 save 된다.
+  //req.body에 들어있을 수 있는 이유는 bodyparser를 사용하기 때문
+  //save메서드를 사용해 데이터베이스(mongodb)에 생성한 user 모델 인스턴스를 저장한다.
   user.save((err, doc) => {
     if (err) return res.json({ success: false, err })
     return res.status(200).json({ success: true })
