@@ -1,0 +1,35 @@
+mongoos 는 몽고DB를 편하게 쓸 수 있는 Object Modeling Tool 이다.
+
+
+git remote 삭제
+https://blog.naver.com/pooah8/222197502391
+
+nodemon 소스를 변경할때 그걸 감지해서 자동으로 서버를 재시작해주는 tool
+
+auth(authentication) 기능 만들기
+- 페이지 이동 때마다 로그인 되어있는지 확인(로그인된 유저만 들어갈수 있는 페이지인지 등등), 
+- 관리자 유저인지 등을 체크
+- 글을 쓸 때나 지울 때 등에 권한이 있는지 체크
+
+암호화 - 평문을 부호화하여 암호문으로 만드는 것
+복호화 - 암호문을 평문으로 역부호화하는 것
+
+<환경변수 process.env.NODE_ENV>
+local 환경에서 - development
+depoly(배포)한 후 - production
+
+npm vs npx
+
+npm(node pakage manager)
+- registry(저장소)로서 여러 라이브러리를 담고 있다. 
+- 배포할 때 npm의 build 명령어로 빌드한다.
+
+npm install locally vs globally
+- "-g" flag를 안주면 그냥 local에 다운한다. 그리고 그것들은 node_module 폴더에 다운 받아진다.
+- "-g" flag를 주면 그냥 프로젝트 안에서만 다운이 받아지는게 아니라 컴퓨터 머신 자체에 다운 받아진다.
+
+원래 cra을 이용할때 npm install -g create-react-app 이렇게 했었다. global 디렉토리에 다운.
+
+but 이제는 npx를 이용하여 그냥 cra를 이용할 수 있다.
+
+how? => npx 가 npm registry에서 cra를 찾아서 다운로드 없이 실행시켜준다.
