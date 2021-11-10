@@ -3,8 +3,6 @@
 const express = require("express");
 //새로운 express app 을 만든다.
 const app = express()
-//5000번 포트를 백서버로 둔다.
-const port = 5000
 //client 에서 보내는 정보를 분석해서 서버에서 받을 수 있게 해준다.
 //bodyParser를 사용하지 않으면 req.body가 undefinded를 default로 받는다.
 const bodyParser = require("body-parser")
@@ -28,7 +26,11 @@ mongoose.connect(config.mongoURI)//서버와 데이터베이스(mongoDB)를 연�
   .catch(err => console.log("MongoDB error: ", err));
 
 //root 디렉토리에 오면 hello world를 출력한다
-app.get('/', (req, res) => res.send('헬로 월드'))
+app.get('/', (req, res) => res.send('hello world'))
+
+app.get('/api/hello', (req,res)=> {
+  res.send("Hello World~ ")
+})
 
 app.post('/api/users/register', (req, res) => {
   //회원가입할때 필요한 정보들을 client(현재는 postman) 에서 가져오면
@@ -100,6 +102,8 @@ app.get('/api/users/logout', auth, (req, res)=> {
   })
 })
 
+//5000번 포트를 백서버로 둔다.
+const port = 5000
 //5000번 포트에서 연결을 청취하고, 연결됬을 시 콜백함수를 실행한다.
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
