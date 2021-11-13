@@ -6,6 +6,7 @@ const app = express()
 //client 에서 보내는 정보를 분석해서 서버에서 받을 수 있게 해준다.
 //bodyParser를 사용하지 않으면 req.body가 undefinded를 default로 받는다.
 const bodyParser = require("body-parser")
+//const cors = require("cors")
 //모델을 가져온다.
 const cookieParser = require("cookie-parser");
 const config = require('./config/key');
@@ -19,6 +20,12 @@ app.use(bodyParser.json());
 x-www-form-urlencoded 이렇게 된 데이터와
 json 형식의 데이터를 분석할 수 있게 하기 위해 윗 문장을 적어준다.*/
 app.use(cookieParser());
+/*app.use(
+	cors({
+		origin: cors_origin, //허락하고자 하는 요청주소
+		credentials: true, //true로 하면 설정한 내용을 response 헤더에 추가 해줍니다.
+	})
+);*/
 
 const mongoose = require('mongoose');//스키마를 만들고, 해당 스키마에 맞는 모델을 만들어 공통된 조건에 맞게 조회 및 저장이 가능하다.
 mongoose.connect(config.mongoURI)//서버와 데이터베이스(mongoDB)를 연결
@@ -28,7 +35,9 @@ mongoose.connect(config.mongoURI)//서버와 데이터베이스(mongoDB)를 연�
 //root 디렉토리에 오면 hello world를 출력한다
 app.get('/', (req, res) => res.send('hello world'))
 
-app.get('/api/hello', (req,res)=> {
+//let cors_origin = ['http://localhost:3000'];
+
+app.get('/api/hello', (req,res) => {
   res.send("Hello World~ ")
 })
 
