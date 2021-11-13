@@ -33,3 +33,6 @@ npm install locally vs globally
 but 이제는 npx를 이용하여 그냥 cra를 이용할 수 있다.
 
 how? => npx 가 npm registry에서 cra를 찾아서 다운로드 없이 실행시켜준다.
+-------------------------------------------
+Concurrently 를 이용해서 프론트, 백 서버 한번에 켜기
+- 여러개의 commands를 동시에 작동 시킬수 있게 해주는 tool
