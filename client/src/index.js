@@ -17,8 +17,7 @@ const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)
 ReactDOM.render(
 	<Provider store={createStoreWithMiddleware(Reducer,
 			//브라우저에서 DEVTOOLS 익스텐션을 사용하기 위함
-			window.__REDUX_DEVTOOLS_EXTENSTION__ &&
-		    window.__REDUX_DEVTOOLS_EXTENSTION__()
+			window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 		)}>
 		<App /*이부분에 App대신 보여주고픈 컴포넌트를 넣으면 된다.*/ />
 	</Provider>,
