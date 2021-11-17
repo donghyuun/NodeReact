@@ -1,4 +1,5 @@
 import { LOGIN_USER } from "../_actions/types";
+import { REGISTER_USER } from "../_actions/types";
 
 export default function (state = {}, action) {
     switch (action.type) {
@@ -6,9 +7,11 @@ export default function (state = {}, action) {
             return { ...state, loginSuccess: action.payload }
             break;
 			
+		case REGISTER_USER:
+            return { ...state, register: action.payload }
+            break;	
+			
 		default:
 			return state;
 	}
 }
-
-//13:49

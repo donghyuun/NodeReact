@@ -18,7 +18,7 @@ function LoginPage(props) {
 		  password: password
 	  };
 	  dispatch(loginUser(body))
-	  .then(response => {//LoginUser 액션함수가 리턴하는 값을 참고함
+	  .then(response => {//리듀서가 리턴하는 값을 참고함
 		  if(response.payload.loginSuccess){
 			  navigate('/')//페이지 이동
 		  }else{
