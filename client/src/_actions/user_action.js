@@ -25,7 +25,7 @@ export function registerUser(dataToSubmit) {
 
 export function auth(dataToSubmit) {
     //아래의 request 에 값을 담는 과정에서 미들웨어가 사용됨
-    const request = axios.get('/api/users/auth')
+    const request = axios.get('/api/users/auth')//서버에서 권한을 확인함
         .then(response => response.data)
 
     return {

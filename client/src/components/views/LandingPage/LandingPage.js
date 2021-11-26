@@ -11,7 +11,7 @@ function LandingPage() {
   }, [])
 
   const onClickHandler = () => {
-	  axios.get('api/users/logout')
+	  axios.get('api/users/logout')//서버에서 axios.get 요청을 받아 처리한다.
 	  .then(response => {
 		  if(response.data.success){
 			  navigate("/login");
