@@ -6,7 +6,7 @@ export function loginUser(dataToSubmit) {
     const request = axios.post('/api/users/login', dataToSubmit)
         .then(response => response.data)
 
-    return {
+    return { //벡엔드에서 받아온 값을 dispatch 로 reducer 에 전달한다.
         type: LOGIN_USER,
         payload: request
     }

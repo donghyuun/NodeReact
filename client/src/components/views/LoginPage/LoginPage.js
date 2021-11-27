@@ -17,7 +17,7 @@ function LoginPage(props) {
 		  email: email,
 		  password: password
 	  };
-	  dispatch(loginUser(body))
+	  dispatch(loginUser(body))//redux 사용 안할시 axios.post('/api/users/login', body)
 	  .then(response => {//리듀서가 리턴하는 값을 참고함
 		  if(response.payload.loginSuccess){
 			  navigate('/')//페이지 이동

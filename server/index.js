@@ -6,7 +6,6 @@ const app = express()
 //client 에서 보내는 정보를 분석해서 서버에서 받을 수 있게 해준다.
 //bodyParser를 사용하지 않으면 req.body가 undefinded를 default로 받는다.
 const bodyParser = require("body-parser")
-//const cors = require("cors")
 //모델을 가져온다.
 const cookieParser = require("cookie-parser");
 const config = require('./config/key');
@@ -46,7 +45,7 @@ app.post('/api/users/register', (req, res) => {
   //그것들을 데이터 베이스에 넣어준다.
 
   //받은 정보로 모델 생성, json 형식으로 req가 들어있다.
-  const user = new User(req.body)//User 모델을 이용해 새로운 모델 인스턴스을 생성한다
+  const user = new User(req.body)//req.body를 모델에 넣어 인스턴스를 생성한다.
   //컬렉션(DB)에 저장하려면 mongoose의 save() 메소드를 호출하면 됩니다.
   //req.body에 들어있을 수 있는 이유는 bodyparser를 사용하기 때문
   //save메서드를 사용해 데이터베이스(mongodb)에 생성한 user 모델 인스턴스를 저장한다.
@@ -54,7 +53,6 @@ app.post('/api/users/register', (req, res) => {
     if (err) return res.json({ success: false, err })
     return res.status(200).json({ success: true })
   })
-
   //결과적으로 http post 메소드로 백엔드 서버로 유저 정보를 날려주고 백엔드 서버에서 save 메소드로 DB에 저장을 해준다
 })
 
@@ -76,7 +74,7 @@ app.post('/api/users/login', (req, res) => {
       user.generateToken((err, user) => {//token이 들어있는 user 객체
         if (err) return res.status(400).send(err);
 
-        //토큰을 저장한다. 어디에? 쿠키, localStorage 등.. 지금은 쿠키에
+        //토큰을 저장한다. 어디에? 쿠키, localStorage 등.. 지금은 쿠키의 "x_auth"경로에
         res.cookie("x_auth", user.token)
           .status(200)//성공했다는 표시
           .json({ loginSuccess: true, userId: user._id })
@@ -87,8 +85,10 @@ app.post('/api/users/login', (req, res) => {
 
 //현재의 role => role 0 -> 일반유저, role 0 아니면 관리자
 app.get('/api/users/auth', auth/*미들웨어*/, (req, res) => {
+  //미들웨어 실행~~
+	
   //여기 까지 미들웨어를 통과해 왔다는 얘기는 authentication 이 true 라는 말
-  //true라는 정보를 제공
+  //클라이언트에 true라는 정보를 제공
   res.status(200).json({
     _id: req.user._id,//auth에서 user 를 req 에 넣었기 때문에 사용가능
     isAdmin: req.user.role === 0 ? false : true,//변경가능
@@ -103,7 +103,7 @@ app.get('/api/users/auth', auth/*미들웨어*/, (req, res) => {
 
 app.get('/api/users/logout', auth, (req, res)=> {
   //첫번째 인자에 찾을 조건, 두번재 인자에 변경할 것
-  User.findOneAndUpdate({_id: req.user._id/*auth에서 req에 넣어줌*/}, 
+  User.findOneAndUpdate({_id: req.user._id/*auth에서 req에 넣어줬음*/}, 
   {token: ""},
   (err, user)=> {
     if(err) return res.json({success: false, err});

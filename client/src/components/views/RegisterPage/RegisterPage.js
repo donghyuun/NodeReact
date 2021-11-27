@@ -29,8 +29,9 @@ function Register(props) {
 		  password: password,
 		  name: name
 	  };
+	  //redux 사용 안할시 axios.post('/api/users/register', body)
 	  dispatch(registerUser(body))
-	  .then(response => {//리듀서가 리턴하는 값을 참고함
+	  .then(response => {//registerUser 액션 함수가 반환하는값(=reducer로 넘어가는 값)
 		  if(response.payload.success){
 			  navigate('/login')
 		  }else{

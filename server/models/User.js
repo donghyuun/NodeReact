@@ -40,21 +40,22 @@ const userSchema = mongoose.Schema({
 //pre는 mongoose 에서 가져온 메서드, save는 저장하기 전에 function을 실행
 userSchema.pre('save', function(next) {//next는 바로 이 과정을 pass 함
   //현재 스키마에 들어있는 post된 password를 가져온다
-  var user = this;
+  var user = this;//this는 userSchema를 가리킨다.=> 회원가입시 입력한 데이터가 들어있음
   //field에서 password가 변환될때만 password를 암호화 해준다.
   if (user.isModified('password')) {
     //bcrypt 패키지의 salt를 이용해서 비밀번호를 암호화 시킨다.
-    //genSalt는 salt를 생성한다
+    //genSalt는 salt를 생성한다, saltRounds 는 salt의 자릿수
     bcrypt.genSalt(saltRounds, function(err, salt) {
       if (err) return next(err)
-
+	  //salt를 제대로 생성했다면	plainpassword 암호화
       bcrypt.hash(user.password, salt, function(err, hash) {
         if (err) return next(err)
-        user.password = hash//password를 암호화된 hash 로 바꿔준다
+		//암호화 성공했다면 password를 암호화된 hash 로 바꿔준다
+        user.password = hash
         next()//완료 후 돌아감
       })
     })
-  } else {//그냥 나갈 곳을 만들어준다.
+  } else {//비밀번호 변경안할 시 그냥 나갈 곳을 만들어준다.
     next()
   }
 });
@@ -70,12 +71,13 @@ userSchema.methods.comparePassword = function(plainPassword, callback) {
 userSchema.methods.generateToken = function(callback) {
   var user = this;
   //jsonwebtoken을 이용해서 token 생성
-  var token = jwt.sign(user._id.toHexString(), 'secretToken');//임의로 두번째(secret key) 지정
-  //user._id + 'secretToken' = token (incode)
+  var token = jwt.sign(user._id.toHexString(), 'secretToken');
+  //임의로 두번째(secret key) 지정
+  //user._id + 'secretToken' = token 생성(암호화)
   //->
-  //'secretToken' -> user._id (decode)
+  //'secretToken'을 이용하면 다시 -> user._id 확인(복호화)
 
-  user.token = token;//user 객체의 token 에 토큰을 넣어준다.
+  user.token = token;//user 객체(userSchema)의 token field 에 토큰을 넣어준다.
   user.save(function(err, user) {
     if (err) return callback(err)
     callback(null, user)
@@ -85,9 +87,9 @@ userSchema.methods.generateToken = function(callback) {
 userSchema.statics.findByToken = function(token, callback) {
   var user = this;
 
-  //토큰을 복호화(decode) 한다
+  //클라이언트의 토큰을 복호화(decode) 한다
   jwt.verify(token, 'secretToken', function(err, decoded) {
-    //유저 아이디(decoded)를 이용해서 유저를 찾은 다음에
+    //decode를 통해 확인한 user _id(decoded)를 이용해서 유저를 찾은 다음에
     //클라이언트에서 가져온 token 과 DB에 보관된 토큰이 일치하는지 확인
 
     user.findOne({ "_id": decoded, "token": token }, function(err, user) {
